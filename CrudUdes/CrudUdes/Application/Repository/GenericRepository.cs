@@ -14,6 +14,10 @@ namespace CrudUdes.Application.Repository
             _context = context;
         }
 
+        public virtual async Task<T>  GetById(int Id)
+        {
+            return await  _context.Set<T>().FindAsync(Id);    
+        }
         public virtual async  Task<IEnumerable<T>> GetAll()
         {
             return await  _context.Set<T>().ToListAsync();
@@ -48,5 +52,7 @@ namespace CrudUdes.Application.Repository
         {
             _context.Set<T>().Update(entity);
         }
+
+        
     }
 }

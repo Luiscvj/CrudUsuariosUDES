@@ -10,7 +10,9 @@ namespace CrudUdes.Api.Profiles
         public MappingProfiles() 
         {
             CreateMap<Role, RoleDto>().ReverseMap();
+            CreateMap<Role, RoleInfoDto>().ReverseMap();    
             CreateMap<User, UserRolesDto>().ReverseMap();
+            CreateMap<User, UserDto>().ReverseMap();
 
         }    
     }
