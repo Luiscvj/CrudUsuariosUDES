@@ -11,9 +11,9 @@ namespace CrudUdes.Persistence.Seed
             modelBuilder.Entity<Role>()
                .HasData
                (
-                   new Role { RoleId = 1, RoleName = "Admin" },
-                   new Role { RoleId = 2, RoleName ="Employee" },
-                   new Role { RoleId = 3, RoleName = "Manager" }
+                   new Role { RoleId = 1, RoleName = "Administrador" },
+                   new Role { RoleId = 2, RoleName = "Empleado" },
+                   new Role { RoleId = 3, RoleName = "Gerente" }
                );
 
             modelBuilder.Entity<DocumentType>()

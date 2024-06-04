@@ -40,5 +40,15 @@ namespace CrudUdes.Api.Controllers
             return null;
 
         }
+
+
+        [HttpGet("UsersWithCurrentRole")]
+
+        public async Task<IEnumerable<UserDto>>  getUsersWithCurrentRole(int roleId) 
+        {
+           var users = await _unitOfWork.Roles.getUsersWithCurrentRole(roleId);
+
+            return _mapper.Map<IEnumerable<UserDto>>(users);
+        }
     }
 }

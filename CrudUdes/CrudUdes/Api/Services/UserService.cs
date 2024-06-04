@@ -32,7 +32,9 @@ namespace CrudUdes.Api.Services
                     Email = registerDto.Email,
                     UserName = registerDto.UserName,
                     DocumentNumber = registerDto.DocumentNumber,
-                    DocumentTypeId = 1
+                    DocumentTypeId = registerDto.DocumentType,
+                    Name = registerDto.Name,
+                    LastName = registerDto.LastName
                 };
 
                 if(ValidPassword.IsValidPassword(registerDto.Password))

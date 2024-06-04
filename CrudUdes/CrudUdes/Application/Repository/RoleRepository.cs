@@ -11,6 +11,12 @@ namespace CrudUdes.Application.Repository
         {
         }
 
+        public async Task<IEnumerable<User>> getUsersWithCurrentRole(int roleId)
+        {
+           var users = await _context.Users.Where(u => u.Roles.Any(r =>r.RoleId == roleId)).ToListAsync();
+            return users;
+        }
+
         public async Task<IEnumerable<User>> UsersWithoutCurrentRole(int roleId)
         {
 

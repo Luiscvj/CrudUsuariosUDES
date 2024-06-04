@@ -18,7 +18,7 @@ namespace CrudUdes.Api.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> PostUser(RegisterDto model)
+        public async Task<IActionResult> RegisterUser(RegisterDto model)
         {
             if(model != null)
             {
@@ -56,31 +56,72 @@ namespace CrudUdes.Api.Controllers
             var success = await _userService.AddRole(model);
             if (success) 
             {
-                return Ok("Rol added successfully");
+                return new JsonResult(new { statusCode = 204, message = "Rol added Successfully" });
             
             }
-            return BadRequest();
+            return new JsonResult(new { statusCode = 400, message = "User already have that role" });
         
+        }
+
+        [HttpPost("LoginUser")]
+
+        public async Task<LoginDto> LoginUser(LoginDto model)
+        {
+            if (model != null)
+            {
+                return await _userService.UserLogin(model);
+            }
+            return null;
         }
 
         [HttpGet("ListUsersRoles")]
 
 
-        public async Task<IActionResult> GetUserRoles()
+        public async Task<List<UserRolesDto>> GetUsersRoles()
         {
            var userRoles =  await _unitOfWork.Users.GetUserRoles();
             Console.WriteLine(userRoles);
-            return Ok(_mapper.Map<List<UserRolesDto>>(userRoles));
+            return _mapper.Map<List<UserRolesDto>>(userRoles);
          
+        }
+
+        [HttpGet("getUserRolesByUserId")]
+
+        public async Task<UserRolesDto> getUserRolesByUserId(int userId)
+        {
+            var user = await _unitOfWork.Users.GetUserRolesByUserId(userId);
+            if (user == null) return null;
+            return _mapper.Map<UserRolesDto>(user);
+        }
+
+        [HttpGet("GetUserList")]
+
+        public async Task<List<UserDto>> getUserList()
+        {
+            var users = await _unitOfWork.Users.GetUsers();
+            if(users == null) 
+            {
+                return null;
+            }
+            return _mapper.Map<List<UserDto>>(users);   
         }
 
 
         [HttpGet("UserByDocumentNumber")]
 
-        public async Task<ActionResult<UserDto>> UserByDocumentNumber(string DocumentNumber)
+        public async Task<UserDto> UserByDocumentNumber(string DocumentNumber)
         {
             var user = await _unitOfWork.Users.GetUserByDocumentNumber(DocumentNumber);
-            return Ok(_mapper.Map<UserDto>(user));
+            return _mapper.Map<UserDto>(user);
+        }
+
+        [HttpGet("EmailAlreadyUse")]
+
+        public async Task<bool> EmailAlreadyUse(string emailToFind)
+        {
+            var user = await _unitOfWork.Users.GetUserByEmail(emailToFind);
+            if(user == null) return false;
+            return true;
         }
 
 
@@ -92,7 +133,7 @@ namespace CrudUdes.Api.Controllers
             if(user != null)
             {
                 _unitOfWork.Users.Remove(user);
-                _unitOfWork.SaveAsync();
+                await  _unitOfWork.SaveAsync();
                 return new JsonResult(new { statusCode = 204, message = "User deleted successfully" });
 
             }
@@ -102,7 +143,7 @@ namespace CrudUdes.Api.Controllers
 
         [HttpPut]
 
-        public async Task<IActionResult> UpddateUser([FromBody]UserDto model)
+        public async Task<IActionResult> UpddateUser([FromBody]UserDtoUpdate model)
         {
             var user = await _unitOfWork.Users.GetById(model.UserId);
 

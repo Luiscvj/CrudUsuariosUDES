@@ -24,9 +24,22 @@ namespace CrudUdes.Application.Repository
 
         public async Task<List<User>> GetUserRoles()
         {
-            return  await _context.Users
+            return await _context.Users
                                  .Include(x => x.Roles)
-                                 .ToListAsync();      
+                                 .ToListAsync();
+        }
+
+        public async Task<User> GetUserRolesByUserId(int userId)
+        {
+            return await  _context.Users
+                    .Include(x => x.Roles)
+                    .FirstOrDefaultAsync(u => u.UserId == userId);
+                   
+        }
+
+        public async  Task<List<User>> GetUsers()
+        {
+            return await _context.Users.ToListAsync();
         }
     }
 }

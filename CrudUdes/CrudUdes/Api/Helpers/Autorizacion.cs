@@ -4,10 +4,10 @@
     {
         public enum Roles
         {
-            Admin,
-            Manager,
-            Employee
+            Administrador,
+            Gerente,
+            Empleado
         }
-        public const Roles rol_predeterminado = Roles.Employee;
+        public const Roles rol_predeterminado = Roles.Empleado;
     }
 }
